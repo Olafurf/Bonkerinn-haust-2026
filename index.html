@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golfhópurinn – Mótaröð 2026–27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-anthropic-sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-anthropic-serif:'Source Serif 4',Georgia,serif;
+  --cds-font-size-caption:.78rem; --cds-font-size-body:.9rem; --cds-font-size-heading:1.05rem; --cds-font-size-title:1.75rem;
+  --cds-font-weight-medium:500;
+  --cds-gap-xs:4px; --cds-gap-sm:8px; --cds-gap-md:14px; --cds-gap-lg:20px; --cds-gap-xl:28px;
+  --cds-pad-xs:4px; --cds-pad-sm:8px; --cds-pad-md:12px; --cds-pad-lg:18px;
+  --cds-radius:8px; --cds-dur-slow:.3s;
+  --color-bg:#f5f4ef; --color-panel:#ffffff; --color-fg:#1c1c1a; --color-fg-muted:#6b6a64; --color-border-line:#e3e1d9;
+  --color-ok:#2f7d4f; --color-bad:#c0392b;
+  --cds-surface-popover:#ffffff; --cds-border:#d9d7cf; --cds-text-secondary:#6b6a64;
+  --cds-shadow-popover:0 6px 24px rgba(0,0,0,.14);
+  --cds-chart-grid:#ebe9e2;
+}
+@media (prefers-color-scheme:dark){:root{
+  --color-bg:#151514; --color-panel:#1f1f1d; --color-fg:#ecebe6; --color-fg-muted:#a09f98; --color-border-line:#33322f;
+  --color-ok:#6fcf97; --color-bad:#ff7b6b;
+  --cds-surface-popover:#262624; --cds-border:#3a3936; --cds-text-secondary:#a09f98;
+  --cds-shadow-popover:0 6px 24px rgba(0,0,0,.5); --cds-chart-grid:#2c2b28;
+}}
+html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(--font-anthropic-sans);-webkit-text-size-adjust:100%}
+#dash-root{padding:clamp(12px,3vw,32px) var(--dash-gutter,16px)}
+.gh b,.gh strong{font-weight:600}
+.gh footer.src{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);text-align:center}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+<div id="dash-root">
+<script>
+(function(){
+  const RAW = {hringir: [{"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 4, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 5, "punktar": 1, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 5, "punktar": 1, "gestur": true, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": true, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 7, "punktar": 1, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 7, "punktar": 1, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 4, "punktar": 1, "gestur": true, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 8, "punktar": 0, "gestur": true, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 1, "gestur": true, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Jói", "forgjof": 11, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 4, "punktar": 1, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 1, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 2, "punktar": 3, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 7, "punktar": 0, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 2, "punktar": 3, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ozzy 69", "forgjof": 0, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 3, "punktar": 3, "gestur": true, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 9, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "James", "forgjof": -4, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 9, "punktar": 0, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 7, "punktar": 1, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 5, "punktar": 0, "gestur": false, "leikforgjof": 14, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 14, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Pétur Ás", "forgjof": 14, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 14, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 5, "punktar": 0, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Einar Gestur", "forgjof": 3, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Maggi Karls", "forgjof": 0, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 0, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 5, "punktar": 3, "gestur": false, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 7, "punktar": 1, "gestur": false, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 5, "punktar": 0, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Gústi Vals", "forgjof": 8.5, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 2, "punktar": 2, "gestur": false, "leikforgjof": -3, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -3, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 0, "gestur": false, "leikforgjof": -3, "fgj_hogg": -1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Johannes Gislason", "forgjof": -2.2, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 10, "punktar": 0, "gestur": false, "leikforgjof": 3, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 8, "punktar": 0, "gestur": false, "leikforgjof": 3, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Raggio", "forgjof": 2.1, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 3, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 5, "punktar": 1, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 3, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 3, "gestur": true, "leikforgjof": 19, "fgj_hogg": 2}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 7, "punktar": 0, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 5, "punktar": 1, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ási Haraldz", "forgjof": 15, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 19, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 7, "punktar": 1, "gestur": false, "leikforgjof": 2, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 8, "punktar": 0, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 5, "punktar": 0, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 4, "punktar": 4, "gestur": false, "leikforgjof": 2, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Ólafur Arnar", "forgjof": 2, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 2, "fgj_hogg": 0}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 1, "par": 4, "hcp_hola": 11, "hogg": 7, "punktar": 0, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 2, "par": 5, "hcp_hola": 13, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 3, "par": 3, "hcp_hola": 7, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 4, "par": 4, "hcp_hola": 3, "hogg": 9, "punktar": 0, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 5, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 6, "par": 4, "hcp_hola": 9, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 7, "par": 4, "hcp_hola": 15, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 8, "par": 3, "hcp_hola": 17, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 9, "par": 5, "hcp_hola": 1, "hogg": 8, "punktar": 0, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 10, "par": 5, "hcp_hola": 6, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 11, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 3, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 12, "par": 4, "hcp_hola": 8, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 13, "par": 4, "hcp_hola": 12, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 14, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 15, "par": 5, "hcp_hola": 2, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 16, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 3, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 17, "par": 4, "hcp_hola": 4, "hogg": 7, "punktar": 0, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 1, "vollur": "Oslo Golfklubb", "leikmadur": "Morri2008", "forgjof": 18, "hola": 18, "par": 4, "hcp_hola": 14, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 18, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 3, "punktar": 4, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -5, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -5, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -5, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 5, "punktar": 0, "gestur": false, "leikforgjof": -5, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "James", "forgjof": -5, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -5, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 5, "punktar": 0, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 8, "punktar": 0, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Gústi Vals", "forgjof": 6, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 8, "punktar": 0, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 5, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Johannes Gislason", "forgjof": -4, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 9, "punktar": 0, "gestur": false, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 9, "punktar": 0, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Pétur Ás", "forgjof": 11, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 11, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 9, "punktar": 0, "gestur": true, "leikforgjof": 10, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 4, "punktar": 1, "gestur": true, "leikforgjof": 10, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 8, "punktar": 0, "gestur": true, "leikforgjof": 10, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 3, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 2, "gestur": true, "leikforgjof": 10, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 10, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 7, "punktar": 0, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": true, "leikforgjof": 10, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 10, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 3, "punktar": 3, "gestur": true, "leikforgjof": 10, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Jói", "forgjof": 10, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 10, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -1, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Maggi Karls", "forgjof": -1, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 4, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": -4, "fgj_hogg": -1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Oli Dor", "forgjof": -4, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": -4, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 7, "punktar": 0, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 1, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ólafur Arnar", "forgjof": 1, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 8, "punktar": 0, "gestur": false, "leikforgjof": 1, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 12, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 4, "punktar": 3, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 7, "punktar": 1, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 12, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 9, "punktar": 0, "gestur": false, "leikforgjof": 12, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Ingi Karl", "forgjof": 12, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 5, "punktar": 3, "gestur": false, "leikforgjof": 12, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 6, "punktar": 1, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 5, "punktar": 1, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 3, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 8, "punktar": 0, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 4, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 4, "punktar": 1, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 3, "punktar": 3, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 6, "punktar": 0, "gestur": false, "leikforgjof": 6, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Doddi79", "forgjof": 6, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 2, "gestur": false, "leikforgjof": 6, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 1, "par": 4, "hcp_hola": 8, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 2, "par": 4, "hcp_hola": 2, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 3, "par": 5, "hcp_hola": 12, "hogg": 7, "punktar": 0, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 4, "par": 3, "hcp_hola": 16, "hogg": 5, "punktar": 0, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 5, "par": 5, "hcp_hola": 14, "hogg": 7, "punktar": 0, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 6, "par": 4, "hcp_hola": 6, "hogg": 6, "punktar": 1, "gestur": true, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 7, "par": 4, "hcp_hola": 10, "hogg": 6, "punktar": 0, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 8, "par": 3, "hcp_hola": 18, "hogg": 4, "punktar": 1, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 9, "par": 4, "hcp_hola": 4, "hogg": 8, "punktar": 0, "gestur": true, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 10, "par": 5, "hcp_hola": 7, "hogg": 9, "punktar": 0, "gestur": true, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 11, "par": 3, "hcp_hola": 3, "hogg": 3, "punktar": 3, "gestur": true, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 12, "par": 4, "hcp_hola": 11, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 13, "par": 4, "hcp_hola": 5, "hogg": 5, "punktar": 2, "gestur": true, "leikforgjof": 8, "fgj_hogg": 1}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 14, "par": 4, "hcp_hola": 9, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 15, "par": 3, "hcp_hola": 17, "hogg": 4, "punktar": 1, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 16, "par": 4, "hcp_hola": 13, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 17, "par": 4, "hcp_hola": 15, "hogg": 4, "punktar": 2, "gestur": true, "leikforgjof": 8, "fgj_hogg": 0}, {"umferd": 2, "vollur": "Kuala Lumpur G&CC – West", "leikmadur": "Asgaer Olafs", "forgjof": 8, "hola": 18, "par": 5, "hcp_hola": 1, "hogg": 6, "punktar": 2, "gestur": true, "leikforgjof": 8, "fgj_hogg": 1}]};
+  const calcs = {}, cache = {}, draws = {};
+  const get = (id) => {
+    if (id in cache) return cache[id];
+    if (RAW[id]) return (cache[id] = RAW[id]);
+    const c = calcs[id];
+    if (!c) return [];
+    return (cache[id] = c.fn(...c.inputs.map(get)));
+  };
+  const runDraw = (name) => {
+    const fn = draws[name];
+    if (!fn) return;
+    for (const el of document.querySelectorAll('[data-draw="' + name + '"]')) {
+      try { fn(el); } catch (e) { console.error(name, e); }
+    }
+  };
+  window.dash = {
+    calc(id, o) { calcs[id] = o; },
+    loader() {},
+    data(id) { const d = get(id); return {status: 'ok', data: d, columns: d.length ? Object.keys(d[0]) : [], refreshing: false, meta: []}; },
+    draw(name, fn) { if (fn) draws[name] = typeof fn === 'function' ? fn : (el) => fn.update(el, fn.mount && fn.mount(el)); else runDraw(name); },
+    onData(fn) { fn(); },
+    colors: ['#2f8a5b', '#c9a227', '#3d7bd9', '#d1495b', '#7a5cc2', '#e07b39', '#2aa1a8', '#8a8a83'],
+    params: () => ({}), setParams() {}, resetParams() {}, setLink() {}, refresh() {}
+  };
+  window.__runAllDraws = () => Object.keys(draws).forEach(runDraw);
+  let w = 0;
+  window.addEventListener('resize', () => { if (innerWidth !== w) { w = innerWidth; window.__runAllDraws(); } });
+})();
+</script>
+
+<style>
+#dash-root{--dash-gutter:clamp(12px,3vw,32px)}
+.gh{
+  --gh-green:#0f3d2b; --gh-green-2:#1d5c40; --gh-gold:#c9a227; --gh-gold-soft:color-mix(in srgb,#c9a227 18%,transparent);
+  --gh-silver:#a7adb4; --gh-bronze:#b87333;
+  --gh-bar:#2f8a5b; --gh-bar-low:color-mix(in srgb,#c9a227 70%,var(--color-panel));
+  --gh-bird:#d1495b; --gh-eagle:#e0a400; --gh-bogey:#3d7bd9; --gh-dbl:#1f3f7a;
+  font-family:var(--font-anthropic-sans);display:flex;flex-direction:column;gap:var(--cds-gap-xl);max-width:1200px;margin-inline:auto
+}
+/* Hero */
+.gh .hero{position:relative;overflow:hidden;border-radius:calc(var(--cds-radius)*2);padding:clamp(20px,4vw,40px);color:#fff;
+  background:linear-gradient(135deg,#0b2e20 0%,#0f3d2b 55%,#1d5c40 100%)}
+.gh .hero::after{content:"";position:absolute;right:-12%;top:-40%;width:55%;height:180%;transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent 0 46%,rgba(201,162,39,.55) 46% 47%,rgba(255,255,255,.06) 47% 100%);pointer-events:none}
+.gh .eyebrow{font-size:var(--cds-font-size-caption);letter-spacing:.14em;text-transform:uppercase;color:var(--gh-gold);font-weight:var(--cds-font-weight-medium)}
+.gh .hero h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:clamp(1.9rem,5vw,3rem);line-height:1.05;margin:var(--cds-gap-xs) 0 0;color:#fff}
+.gh .hero h1 em{font-style:normal;color:var(--gh-gold)}
+.gh .rule{display:flex;align-items:center;gap:6px;margin:var(--cds-gap-md) 0;max-width:260px}
+.gh .rule::before,.gh .rule::after{content:"";flex:1;height:2px;background:var(--gh-gold);opacity:.8}
+.gh .rule span{width:8px;height:8px;border-radius:50%;background:var(--gh-gold)}
+.gh .hero .lead{font-size:var(--cds-font-size-heading);color:rgba(255,255,255,.85);margin:0;max-width:40rem;position:relative;z-index:1}
+.gh .hero .lead b{color:#fff;font-weight:var(--cds-font-weight-medium)}
+.gh .dots{display:flex;gap:8px;margin-top:var(--cds-gap-md);position:relative;z-index:1;min-height:14px}
+.gh .dots i{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.45)}
+.gh .dots i.on{background:var(--gh-gold);border-color:var(--gh-gold)}
+/* Tiles */
+.gh .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:var(--cds-gap-md)}
+.gh .tile{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);
+  text-align:center;position:relative;border-top:4px solid var(--gh-green-2)}
+.gh .tile.gold{border-top-color:var(--gh-gold)}
+.gh .tile svg{width:30px;height:30px;color:var(--gh-green-2);display:block;margin:0 auto var(--cds-gap-xs)}
+.gh .tile.gold svg{color:var(--gh-gold)}
+.gh .lbl{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);text-transform:uppercase;letter-spacing:.08em}
+.gh .big{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums;margin-top:var(--cds-gap-xs);line-height:1.2}
+.gh .sub{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-top:var(--cds-gap-xs)}
+/* Cards */
+.gh .card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius)}
+.gh .cardhead{border-radius:var(--cds-radius) var(--cds-radius) 0 0;background:var(--gh-green);color:#fff;padding:var(--cds-pad-sm) var(--cds-pad-lg);display:flex;align-items:center;gap:var(--cds-gap-sm)}
+.gh .cardhead svg{width:18px;height:18px;color:var(--gh-gold);flex:none}
+.gh .cardhead h2{font-size:var(--cds-font-size-body);font-weight:var(--cds-font-weight-medium);letter-spacing:.1em;text-transform:uppercase;margin:0;color:#fff}
+.gh .cardhead h2 .vlh{text-transform:none;letter-spacing:0;color:var(--gh-gold)}
+.gh .cardbody{padding:var(--cds-pad-md) var(--cds-pad-lg) var(--cds-pad-lg)}
+.gh .note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin:0 0 var(--cds-gap-sm)}
+.gh .legend{display:flex;flex-wrap:wrap;gap:var(--cds-gap-sm) var(--cds-gap-md);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin:0 0 var(--cds-gap-sm)}
+.gh .legend span{display:inline-flex;align-items:center;gap:6px}
+.gh .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.gh .scroll{overflow-x:auto}
+/* Tables */
+.gh table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:var(--cds-font-size-body)}
+.gh th,.gh td{padding:var(--cds-pad-xs) var(--cds-pad-sm);text-align:center;border-bottom:1px solid var(--color-border-line);white-space:nowrap}
+.gh th{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);font-weight:var(--cds-font-weight-medium);text-transform:uppercase;letter-spacing:.05em;vertical-align:bottom}
+.gh th .vl{display:block;font-weight:400;white-space:normal;max-width:6rem;margin:0 auto;line-height:1.2;text-transform:none;letter-spacing:0;color:var(--gh-green-2)}
+.gh .l{text-align:left}
+.gh tbody tr:hover td{background:color-mix(in srgb,var(--gh-green-2) 6%,transparent)}
+.gh td.name{font-weight:var(--cds-font-weight-medium)}
+.gh td.dim{color:var(--color-fg-muted)}
+.gh td.tot{font-family:var(--font-anthropic-serif);font-size:var(--cds-font-size-heading);color:var(--gh-green-2)}
+.gh td.rank{width:2.4rem}
+.gh td.rank.m1,.gh td.rank.m2,.gh td.rank.m3{color:#1b1b1b;font-weight:var(--cds-font-weight-medium);
+  background-clip:content-box;border-radius:50%}
+.gh td.rank.m1{background:radial-gradient(circle,var(--gh-gold) 0 13px,transparent 14px)}
+.gh td.rank.m2{background:radial-gradient(circle,var(--gh-silver) 0 13px,transparent 14px)}
+.gh td.rank.m3{background:radial-gradient(circle,var(--gh-bronze) 0 13px,transparent 14px);color:#fff}
+.gh tbody tr:hover td.rank.m1{background:radial-gradient(circle,var(--gh-gold) 0 13px,transparent 14px)}
+.gh tbody tr:hover td.rank.m2{background:radial-gradient(circle,var(--gh-silver) 0 13px,transparent 14px)}
+.gh tbody tr:hover td.rank.m3{background:radial-gradient(circle,var(--gh-bronze) 0 13px,transparent 14px)}
+.gh td.rd.cnt{background:var(--gh-gold-soft);font-weight:var(--cds-font-weight-medium)}
+.gh td.rd.drop{color:var(--color-fg-muted);text-decoration:line-through}
+.gh td.sc{font-weight:var(--cds-font-weight-medium)}
+.gh td.sc.eagle{color:var(--gh-eagle)}
+.gh td.sc.bird{color:var(--gh-bird)}
+.gh td.sc.par{color:var(--color-fg-muted)}
+.gh td.sc.bogey{color:var(--gh-bogey)}
+.gh td.sc.dbl{color:var(--gh-dbl)}
+@media (prefers-color-scheme:dark){.gh td.sc.dbl{color:#8fb0ff}}
+.gh td.good{color:var(--color-ok)}
+.gh td.bad{color:var(--color-bad)}
+.gh .viewbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--cds-gap-sm) var(--cds-gap-md);margin-bottom:calc(var(--cds-gap-xl) * -0.5)}
+.gh .seg{display:inline-flex;background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:999px;padding:3px}
+.gh .segb{font:inherit;font-size:var(--cds-font-size-body);font-weight:var(--cds-font-weight-medium);border:0;background:transparent;color:var(--color-fg-muted);padding:6px 18px;border-radius:999px;cursor:pointer}
+.gh .segb[aria-pressed=true]{background:var(--gh-green);color:#fff;box-shadow:inset 0 -2px 0 var(--gh-gold)}
+.gh .vnote{margin:0;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.gh #stada .cardbody{position:relative}
+.gh td.rd.cnt,.gh td.rd.drop{cursor:help}
+.gh td.rd.on{outline:2px solid var(--gh-gold);outline-offset:-2px}
+.gh .sctip{display:none;position:absolute;z-index:20;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-top:3px solid var(--gh-gold);
+  border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-sm) var(--cds-pad-md);pointer-events:none;max-width:calc(100% - 8px)}
+.gh .sctip .hd{display:flex;justify-content:space-between;gap:var(--cds-gap-md);align-items:baseline;margin-bottom:var(--cds-gap-xs);white-space:nowrap}
+.gh .sctip .hd b{font-weight:var(--cds-font-weight-medium)}
+.gh .sctip .hd span{font-size:var(--cds-font-size-caption);color:var(--cds-text-secondary)}
+.gh .sctip table.mini{width:auto;font-size:var(--cds-font-size-caption);margin-top:4px}
+.gh .sctip table.mini th,.gh .sctip table.mini td{padding:2px 3px;border:0;min-width:1.7em;text-transform:none;letter-spacing:0;background:none}
+.gh .sctip table.mini th{text-align:left;color:var(--cds-text-secondary);font-weight:400;padding-right:8px}
+.gh .sctip table.mini tr.hn td{color:var(--cds-text-secondary)}
+.gh .sctip table.mini tr.pr td{color:var(--cds-text-secondary);border-bottom:1px solid var(--color-border-line)}
+.gh .sctip table.mini td.sum{font-weight:var(--cds-font-weight-medium);background:color-mix(in srgb,var(--gh-green-2) 10%,transparent)}
+.gh .sctip table.mini tr.pk td{color:var(--gh-green-2);font-weight:var(--cds-font-weight-medium)}
+.gh .sctip table.mini tr.pk td.z{color:var(--color-bad)}
+.gh .sctip .s{display:inline-flex;align-items:center;justify-content:center;width:1.55em;height:1.55em;font-variant-numeric:tabular-nums}
+.gh .sctip .s.e{border-radius:50%;border:1.5px solid var(--gh-eagle);box-shadow:0 0 0 2px var(--cds-surface-popover),0 0 0 3.5px var(--gh-eagle);color:var(--gh-eagle);font-weight:600}
+.gh .sctip .s.b{border-radius:50%;border:1.5px solid var(--gh-bird);color:var(--gh-bird);font-weight:600}
+.gh .sctip .s.bo{border:1.5px solid var(--gh-bogey);border-radius:2px}
+.gh .sctip .s.d{background:var(--gh-dbl);color:#fff;border-radius:2px}
+.gh .sctip .ft{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:var(--cds-gap-xs);font-size:var(--cds-font-size-caption);color:var(--cds-text-secondary)}
+.gh .sctip .ft .s{width:1.2em;height:1.2em;font-size:.8em}
+.gh .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:var(--cds-gap-md)}
+.gh .chart{position:relative;min-height:220px}
+.gh .tip{position:absolute;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);pointer-events:none;white-space:nowrap}
+.gh .tip .t{color:var(--cds-text-secondary)}
+.gh details{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);border-top:2px solid var(--gh-gold);padding-top:var(--cds-pad-sm)}
+.gh details summary{cursor:pointer;color:var(--color-fg)}
+.gh details dl{display:grid;grid-template-columns:auto 1fr;gap:var(--cds-gap-xs) var(--cds-gap-md);margin:var(--cds-gap-sm) 0 0}
+.gh details dt{color:var(--color-fg)}
+.gh details dd{margin:0}
+.gh details ol.rules{margin:var(--cds-gap-xs) 0 0;padding-left:1.4em;columns:2 14rem;column-gap:var(--cds-gap-lg)}
+.gh details ol.rules li{margin:1px 0}
+.gh [data-dash-source-state=empty]{color:transparent}
+.gh [data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
+</style>
+
+<div class="gh">
+  <header class="hero">
+    <div class="eyebrow">Trackman · Punktakeppni</div>
+    <h1>Golfhópurinn<br><em>Mótaröð 2026–27</em></h1>
+    <div class="rule"><span></span></div>
+    <p class="lead"><b data-draw="leader" data-source="lykiltolur" data-field="leidtogi">—</b> leiðir eftir <b data-draw="nr" data-source="lykiltolur" data-field="umferdir">—</b> af 8 umferðum. Fimm bestu hringir af átta telja.</p>
+    <div class="dots" data-draw="dots" data-source="lykiltolur" aria-label="Spilaðar umferðir">—</div>
+  </header>
+
+  <div class="tiles">
+    <div class="tile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3l11 4-11 4"/><path d="M3 21h8"/></svg>
+      <div class="lbl">Umferðir spilaðar</div>
+      <div class="big"><span data-draw="nr2" data-source="lykiltolur" data-field="umferdir">—</span> af 8</div>
+      <div class="sub">Síðast: <span data-draw="sidvollur" data-source="lykiltolur" data-field="sidasti_vollur">—</span></div>
+    </div>
+    <div class="tile gold">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/><path d="M12 14v4M8 21h8M9 18h6"/></svg>
+      <div class="lbl">Efstur í mótaröðinni</div>
+      <div class="big" data-draw="leader2" data-source="lykiltolur" data-field="leidtogi">—</div>
+      <div class="sub"><span data-draw="leaderpts" data-source="lykiltolur" data-field="leidtogi_stig">—</span> punktar</div>
+    </div>
+    <div class="tile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>
+      <div class="lbl">Besti hringur</div>
+      <div class="big"><span data-draw="best" data-source="lykiltolur" data-field="besti_hringur">—</span> punktar</div>
+      <div class="sub" data-draw="bestname" data-source="lykiltolur" data-field="besti_nafn">—</div>
+    </div>
+    <div class="tile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11c3-1 5-4 9-4 3 0 4 2 6 2l3-2-1 4c-1 3-4 6-9 6H7l-3 3v-4c-1-1-1-3-1-5z"/><circle cx="16.5" cy="9.5" r=".6" fill="currentColor"/></svg>
+      <div class="lbl">Flestir fuglar</div>
+      <div class="big" data-draw="birdies" data-source="lykiltolur" data-field="flestir_fuglar">—</div>
+      <div class="sub" data-draw="birdname" data-source="lykiltolur" data-field="fuglar_nafn">—</div>
+    </div>
+  </div>
+
+  <div class="viewbar">
+    <div class="seg" role="group" aria-label="Sýna">
+      <button type="button" class="segb" data-view="motarod" aria-pressed="true">Mótaröð</button>
+      <button type="button" class="segb" data-view="gestir" aria-pressed="false">Gestir</button>
+    </div>
+    <p class="vnote" data-view-note="motarod">Fastir meðlimir hópsins. Aðeins þeir keppa í mótaröðinni.</p>
+    <p class="vnote" data-view-note="gestir" hidden>Gestaspilarar. Þeir raðast sér og telja ekki í mótaröðinni.</p>
+  </div>
+
+  <section class="card" id="stada">
+    <div class="cardhead">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M12 14v4M8 21h8"/></svg>
+      <h2>Stöðutafla</h2>
+    </div>
+    <div class="cardbody">
+      <div class="legend">
+        <span><i style="background:var(--gh-gold-soft);border:1px solid var(--gh-gold)"></i>Telur í heildarstigum</span>
+        <span><s>00</s> Telur ekki (utan 5 bestu)</span>
+        <span>Bentu á skor til að sjá holu fyrir holu</span>
+      </div>
+      <div class="scroll">
+        <table data-source="stada" data-row-key="leikmadur">
+          <thead><tr>
+            <th data-field="saeti">#</th><th class="l" data-field="leikmadur">Leikmaður</th><th data-field="samtals">Stig</th><th data-field="spilad">Spilað</th>
+            <th data-field="u1">U1<span class="vl" data-draw="v1" data-source="vellir" data-field="vollur" data-where="umferd=1">—</span></th>
+            <th data-field="u2">U2<span class="vl" data-draw="v2" data-source="vellir" data-field="vollur" data-where="umferd=2">—</span></th>
+            <th data-field="u3">U3<span class="vl" data-draw="v3" data-source="vellir" data-field="vollur" data-where="umferd=3">—</span></th>
+            <th data-field="u4">U4<span class="vl" data-draw="v4" data-source="vellir" data-field="vollur" data-where="umferd=4">—</span></th>
+            <th data-field="u5">U5<span class="vl" data-draw="v5" data-source="vellir" data-field="vollur" data-where="umferd=5">—</span></th>
+            <th data-field="u6">U6<span class="vl" data-draw="v6" data-source="vellir" data-field="vollur" data-where="umferd=6">—</span></th>
+            <th data-field="u7">U7<span class="vl" data-draw="v7" data-source="vellir" data-field="vollur" data-where="umferd=7">—</span></th>
+            <th data-field="u8">U8<span class="vl" data-draw="v8" data-source="vellir" data-field="vollur" data-where="umferd=8">—</span></th>
+          </tr></thead>
+          <tbody data-draw="stada"></tbody>
+        </table>
+      </div>
+      <div class="sctip" data-draw="sctip" data-source="hringir" role="tooltip">—</div>
+    </div>
+  </section>
+
+  <div class="grid2">
+    <section class="card" id="umferd">
+      <div class="cardhead">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3l11 4-11 4"/></svg>
+        <h2>Síðasta umferð · <span class="vlh" data-draw="rvollur" data-source="umferd_sidast" data-field="vollur" data-row="0">—</span></h2>
+      </div>
+      <div class="cardbody">
+        <p class="note">Jöfn stig ráðast af jafnteflisreglum Trackman, fyrst lægsta nettóskori. Sjá reglur neðst á síðunni.</p>
+        <div class="scroll">
+          <table data-source="umferd_sidast" data-row-key="leikmadur">
+            <thead><tr>
+              <th data-field="saeti">#</th><th class="l" data-field="leikmadur">Leikmaður</th><th data-field="forgjof">Fgj.</th><th data-field="hogg">Högg</th><th data-field="netto">Nettó</th><th data-field="s9">S9</th><th data-field="punktar">Punktar</th>
+            </tr></thead>
+            <tbody data-draw="umferd"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <section class="card" id="holur">
+      <div class="cardhead">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        <h2>Holurnar í síðustu umferð</h2>
+      </div>
+      <div class="cardbody">
+        <div class="legend">
+          <span><i style="background:var(--gh-bar)"></i>Nettó par eða betra</span>
+          <span><i style="background:var(--gh-bar-low)"></i>Undir nettó pari</span>
+          <span><i style="height:0;border-top:2px dashed var(--gh-gold);border-radius:0"></i>2 punktar</span>
+        </div>
+        <div class="chart" data-draw="holur" data-source="holur_sidast">—</div>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="tolfraedi">
+    <div class="cardhead">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="14" cy="9" r=".6" fill="currentColor"/><circle cx="12" cy="13" r=".6" fill="currentColor"/><circle cx="15.5" cy="13.5" r=".6" fill="currentColor"/></svg>
+      <h2>Tölfræði tímabilsins</h2>
+    </div>
+    <div class="cardbody">
+      <div class="legend">
+        <span><i style="background:var(--gh-eagle)"></i>Ernir+</span>
+        <span><i style="background:var(--gh-bird)"></i>Fuglar</span>
+        <span><i style="background:var(--gh-bogey)"></i>Skollar</span>
+        <span><i style="background:var(--gh-dbl)"></i>Tvöfaldir skollar+</span>
+        <span>Allt brúttó (högg miðað við par)</span>
+      </div>
+      <div class="scroll">
+        <table data-source="tolfraedi" data-row-key="leikmadur">
+          <thead><tr>
+            <th class="l" data-field="leikmadur">Leikmaður</th><th data-field="hringir">Hringir</th><th data-field="punktar">Punktar alls</th><th data-field="medaltal">Meðaltal</th><th data-field="besti">Besti</th>
+            <th data-field="ernir">Ernir+</th><th data-field="fuglar">Fuglar</th><th data-field="por">Pör</th><th data-field="skollar">Skollar</th><th data-field="tvofaldir">Tvöf.+</th>
+            <th data-field="thrir">3+ pkt holur</th><th data-field="nullar">0 pkt holur</th>
+          </tr></thead>
+          <tbody data-draw="tolf"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <details>
+    <summary>Reglur og skýringar</summary>
+    <dl>
+      <dt>Keppnisform</dt><dd>Punktakeppni (Stableford) með forgjöf, einn hringur á viku í Trackman.</dd>
+      <dt>Mótaröð</dt><dd>8 umferðir á 8 völlum. Fimm bestu hringir hvers leikmanns gilda.</dd>
+      <dt>Jafntefli</dt><dd>Jafnteflisreglur Trackman fyrir punktakeppni, í þessari röð. Allt er nettóskor (högg að frádregnum forgjafarhöggum) og lægra er betra:
+        <ol class="rules">
+          <li>Lægsta nettóskor mótsins (summa hringjanna sem telja)</li>
+          <li>Lægsta nettóskor á einum hring</li>
+          <li>Lægri forgjöf</li>
+          <li>Seinni 9 holur</li>
+          <li>Síðustu 6 holur</li>
+          <li>Síðustu 3 holur</li>
+          <li>Síðasta hola</li>
+          <li>Fyrri 9 holur</li>
+          <li>Holur 4–9</li>
+          <li>Holur 7–9</li>
+          <li>9. hola</li>
+          <li>Annars deila leikmenn sæti</li>
+        </ol>
+      </dd>
+      <dt>3+ pkt holur</dt><dd>Holur með nettó fugli eða betra.</dd>
+      <dt>0 pkt holur</dt><dd>Holur sem gáfu engan punkt.</dd>
+    </dl>
+  </details>
+<footer class="src">Uppfært 14. nóv. 2026 · Gögn af Trackman-skorkortum</footer>
+</div>
+
+<script>
+dash.calc('hringir_p', {
+  inputs: ['hringir'],
+  title: 'Hringir leikmanna',
+  description: 'Ein lína á leikmann í hverri umferð: punktar, högg, nettóskor eftir hluta vallar (fyrir jafnteflisreglur) og brúttóskor.',
+  fn: (hringir) => {
+    const m = new Map();
+    for (const r of hringir) {
+      const k = r.umferd + '|' + r.leikmadur;
+      let o = m.get(k);
+      if (!o) { o = {umferd: r.umferd, vollur: r.vollur, leikmadur: r.leikmadur, gestur: !!r.gestur, forgjof: +r.forgjof, leikforgjof: +r.leikforgjof, punktar: 0, hogg: 0, f9: 0, s9: 0, netto: 0, n_s9: 0, n_s6: 0, n_s3: 0, n_18: 0, n_f9: 0, n_49: 0, n_79: 0, n_9: 0, ernir: 0, fuglar: 0, por: 0, skollar: 0, tvofaldir: 0, thrir: 0, nullar: 0}; m.set(k, o); }
+      const p = +r.punktar, h = +r.hola, d = +r.hogg - +r.par, n = +r.hogg - +r.fgj_hogg;
+      o.punktar += p; o.hogg += +r.hogg; o.netto += n;
+      if (h <= 9) { o.f9 += p; o.n_f9 += n; } else { o.s9 += p; o.n_s9 += n; }
+      if (h >= 13) o.n_s6 += n;
+      if (h >= 16) o.n_s3 += n;
+      if (h === 18) o.n_18 += n;
+      if (h >= 4 && h <= 9) o.n_49 += n;
+      if (h >= 7 && h <= 9) o.n_79 += n;
+      if (h === 9) o.n_9 += n;
+      if (d <= -2) o.ernir++; else if (d === -1) o.fuglar++; else if (d === 0) o.por++; else if (d === 1) o.skollar++; else o.tvofaldir++;
+      if (p >= 3) o.thrir++;
+      if (p === 0) o.nullar++;
+    }
+    return [...m.values()];
+  }
+});
+
+dash.calc('stada', {
+  inputs: ['hringir_p'],
+  title: 'Stöðutafla',
+  description: 'Summa fimm bestu hringja hvers leikmanns; gestir raðast sér. Jöfn stig ráðast af jafnteflisreglum Trackman (nettóskor mótsins, besta nettóhring, forgjöf, seinni 9 o.s.frv.); annars deila menn sæti.',
+  fn: (hringir_p) => {
+    const keys = ['n_s9', 'n_s6', 'n_s3', 'n_18', 'n_f9', 'n_49', 'n_79', 'n_9'];
+    const rnd = (a, b) => b.punktar - a.punktar || a.netto - b.netto || a.forgjof - b.forgjof || keys.reduce((c, k) => c || a[k] - b[k], 0);
+    const tot = (a, b) => b.samtals - a.samtals || a.netto - b.netto || a.besti_netto - b.besti_netto || a.forgjof - b.forgjof || keys.reduce((c, k) => c || a[k] - b[k], 0);
+    const by = new Map();
+    for (const r of hringir_p) { if (!by.has(r.leikmadur)) by.set(r.leikmadur, []); by.get(r.leikmadur).push(r); }
+    const rows = [...by].map(([n, rs]) => {
+      const best = [...rs].sort(rnd).slice(0, 5);
+      const last = rs.reduce((x, r) => (r.umferd > x.umferd ? r : x));
+      const o = {leikmadur: n, gestur: rs[0].gestur, samtals: 0, spilad: rs.length, netto: 0, besti_netto: Math.min(...best.map((r) => r.netto)), forgjof: last.forgjof, telja: best.map((r) => r.umferd).join(',')};
+      for (const k of keys) o[k] = 0;
+      for (const r of best) { o.samtals += r.punktar; o.netto += r.netto; for (const k of keys) o[k] += r[k]; }
+      for (let u = 1; u <= 8; u++) { const r = rs.find((x) => x.umferd === u); o['u' + u] = r ? r.punktar : null; }
+      return o;
+    });
+    rows.sort(tot);
+    const pos = {true: 0, false: 0}, prev = {};
+    rows.forEach((r) => {
+      pos[r.gestur]++;
+      const p = prev[r.gestur];
+      r.saeti = p && tot(p, r) === 0 ? p.saeti : pos[r.gestur];
+      prev[r.gestur] = r;
+    });
+    return rows;
+  }
+});
+
+dash.calc('umferd_sidast', {
+  inputs: ['hringir_p'],
+  title: 'Síðasta umferð',
+  description: 'Úrslit nýjustu umferðar eftir punktum; jöfn stig ráðast af jafnteflisreglum Trackman (nettóskor, forgjöf, seinni 9, síðustu 6, 3, 18. hola, fyrri 9, 4–9, 7–9, 9. hola). Gestir raðast sér.',
+  fn: (hringir_p) => {
+    const keys = ['n_s9', 'n_s6', 'n_s3', 'n_18', 'n_f9', 'n_49', 'n_79', 'n_9'];
+    const rnd = (a, b) => b.punktar - a.punktar || a.netto - b.netto || a.forgjof - b.forgjof || keys.reduce((c, k) => c || a[k] - b[k], 0);
+    const u = Math.max(...hringir_p.map((r) => r.umferd));
+    const rows = hringir_p.filter((r) => r.umferd === u).sort(rnd);
+    const pos = {true: 0, false: 0}, prev = {};
+    return rows.map((r) => {
+      pos[r.gestur]++;
+      const p = prev[r.gestur];
+      const saeti = p && rnd(p.r, r) === 0 ? p.saeti : pos[r.gestur];
+      prev[r.gestur] = {r, saeti};
+      return {saeti, gestur: r.gestur, leikmadur: r.leikmadur, forgjof: r.forgjof, hogg: r.hogg, netto: r.netto, f9: r.f9, s9: r.s9, punktar: r.punktar, umferd: r.umferd, vollur: r.vollur};
+    });
+  }
+});
+
+dash.calc('tolfraedi', {
+  inputs: ['hringir_p'],
+  title: 'Tölfræði leikmanna',
+  description: 'Samtölur yfir alla hringi tímabilsins; brúttóskor miðað við par.',
+  fn: (hringir_p) => {
+    const by = new Map();
+    for (const r of hringir_p) {
+      let o = by.get(r.leikmadur);
+      if (!o) { o = {leikmadur: r.leikmadur, gestur: r.gestur, hringir: 0, punktar: 0, besti: 0, ernir: 0, fuglar: 0, por: 0, skollar: 0, tvofaldir: 0, thrir: 0, nullar: 0}; by.set(r.leikmadur, o); }
+      o.hringir++; o.punktar += r.punktar; o.besti = Math.max(o.besti, r.punktar);
+      for (const k of ['ernir', 'fuglar', 'por', 'skollar', 'tvofaldir', 'thrir', 'nullar']) o[k] += r[k];
+    }
+    const rows = [...by.values()];
+    for (const o of rows) o.medaltal = Math.round((o.punktar / o.hringir) * 10) / 10;
+    rows.sort((a, b) => b.medaltal - a.medaltal || b.fuglar - a.fuglar);
+    return rows;
+  }
+});
+
+dash.calc('holur_sidast', {
+  inputs: ['hringir'],
+  title: 'Holurnar í síðustu umferð',
+  description: 'Meðalpunktar allra leikmanna á hverri holu í nýjustu umferð.',
+  fn: (hringir) => {
+    const u = Math.max(...hringir.map((r) => r.umferd));
+    const rows = [];
+    for (let h = 1; h <= 18; h++) {
+      const rs = hringir.filter((r) => r.umferd === u && r.hola === h);
+      if (!rs.length) continue;
+      const avg = rs.reduce((s, r) => s + r.punktar, 0) / rs.length;
+      rows.push({hola: h, par: rs[0].par, hcp_hola: rs[0].hcp_hola, medaltal: Math.round(avg * 100) / 100, leikmenn: rs.length});
+    }
+    return rows;
+  }
+});
+
+dash.calc('lykiltolur', {
+  inputs: ['stada', 'hringir_p'],
+  title: 'Lykiltölur',
+  description: 'Fjöldi umferða, efsti maður, besti hringur og flestir fuglar á tímabilinu; aðeins leikmenn mótaraðarinnar, ekki gestir.',
+  fn: (stada, hringir_p) => {
+    stada = stada.filter((r) => !r.gestur);
+    const allir = hringir_p;
+    hringir_p = hringir_p.filter((r) => !r.gestur);
+    const umferdir = new Set(allir.map((r) => r.umferd)).size;
+    const sid = Math.max(...allir.map((r) => r.umferd));
+    const best = Math.max(...hringir_p.map((r) => r.punktar));
+    const bestNames = [...new Set(hringir_p.filter((r) => r.punktar === best).map((r) => r.leikmadur))];
+    const f = new Map();
+    for (const r of hringir_p) f.set(r.leikmadur, (f.get(r.leikmadur) || 0) + r.fuglar);
+    const maxF = Math.max(...f.values());
+    const fNames = [...f].filter(([, v]) => v === maxF).map(([n]) => n);
+    return [{
+      umferdir,
+      sidasti_vollur: allir.find((r) => r.umferd === sid).vollur,
+      leidtogi: stada[0].leikmadur,
+      leidtogi_stig: stada[0].samtals,
+      besti_hringur: best,
+      besti_nafn: bestNames.join(', '),
+      flestir_fuglar: maxF,
+      fuglar_nafn: fNames.join(', ')
+    }];
+  }
+});
+
+dash.calc('vellir', {
+  inputs: ['hringir'],
+  title: 'Vellir umferða',
+  description: 'Hvaða völlur var spilaður í hverri umferð.',
+  fn: (hringir) => {
+    const m = new Map();
+    for (const r of hringir) if (!m.has(r.umferd)) m.set(r.umferd, r.vollur);
+    return [1, 2, 3, 4, 5, 6, 7, 8].map((umferd) => ({umferd, vollur: m.get(umferd) || ''}));
+  }
+});
+
+for (let u = 1; u <= 8; u++) dash.draw('v' + u, (el) => {
+  const g = dash.data('vellir');
+  const r = g.status === 'ok' ? g.data.find((x) => x.umferd === u) : null;
+  el.textContent = r ? r.vollur : '';
+});
+
+// Simple text drawings
+const textDraw = (name, id, field) => dash.draw(name, (el) => {
+  const g = dash.data(id);
+  if (g.status !== 'ok' || !g.data.length || g.data[0][field] == null) { el.textContent = '—'; return; }
+  el.textContent = String(g.data[0][field]);
+});
+textDraw('leader', 'lykiltolur', 'leidtogi');
+textDraw('leader2', 'lykiltolur', 'leidtogi');
+textDraw('leaderpts', 'lykiltolur', 'leidtogi_stig');
+textDraw('nr', 'lykiltolur', 'umferdir');
+textDraw('nr2', 'lykiltolur', 'umferdir');
+textDraw('sidvollur', 'lykiltolur', 'sidasti_vollur');
+textDraw('best', 'lykiltolur', 'besti_hringur');
+textDraw('bestname', 'lykiltolur', 'besti_nafn');
+textDraw('birdies', 'lykiltolur', 'flestir_fuglar');
+textDraw('birdname', 'lykiltolur', 'fuglar_nafn');
+textDraw('rvollur', 'umferd_sidast', 'vollur');
+
+dash.draw('dots', (el) => {
+  const g = dash.data('lykiltolur');
+  if (g.status !== 'ok' || !g.data.length) { el.textContent = '—'; return; }
+  const n = g.data[0].umferdir;
+  el.replaceChildren(...Array.from({length: 8}, (_, i) => { const d = document.createElement('i'); if (i < n) d.className = 'on'; d.title = 'Umferð ' + (i + 1); return d; }));
+});
+
+window.ghView = 'motarod';
+const setView = (v) => {
+  window.ghView = v;
+  for (const b of document.querySelectorAll('.gh .segb')) b.setAttribute('aria-pressed', String(b.dataset.view === v));
+  for (const p of document.querySelectorAll('.gh [data-view-note]')) p.hidden = p.dataset.viewNote !== v;
+  dash.draw('stada'); dash.draw('umferd'); dash.draw('tolf');
+};
+for (const b of document.querySelectorAll('.gh .segb')) b.addEventListener('click', () => setView(b.dataset.view));
+
+// Tables
+const fmtNum = (v) => v == null ? '' : (+v).toLocaleString('is', {maximumFractionDigits: 1});
+const tableDraw = (name, id, cols) => dash.draw(name, (tb) => {
+  tb.replaceChildren();
+  const g = dash.data(id);
+  if (g.status !== 'ok') return;
+  for (const r of g.data.filter((x) => (window.ghView === 'gestir') === !!x.gestur)) {
+    const tr = document.createElement('tr');
+    if (r.leikmadur != null) tr.dataset.key = r.leikmadur;
+    for (const c of cols) {
+      const td = document.createElement('td');
+      const v = r[c.f];
+      td.textContent = c.fmt ? c.fmt(v) : (v == null ? '' : String(v));
+      const cls = typeof c.cls === 'function' ? c.cls(r) : c.cls;
+      if (cls) td.className = cls;
+      tr.append(td);
+    }
+    tb.append(tr);
+  }
+});
+
+const uCol = (u) => ({f: 'u' + u, cls: (r) => r['u' + u] == null ? 'rd none' : (String(r.telja).split(',').includes(String(u)) ? 'rd cnt' : 'rd drop')});
+tableDraw('stada', 'stada', [
+  {f: 'saeti', cls: (r) => 'rank' + (r.saeti <= 3 ? ' m' + r.saeti : '')}, {f: 'leikmadur', cls: 'l name'}, {f: 'samtals', cls: 'tot'}, {f: 'spilad', cls: 'dim'},
+  uCol(1), uCol(2), uCol(3), uCol(4), uCol(5), uCol(6), uCol(7), uCol(8)
+]);
+tableDraw('umferd', 'umferd_sidast', [
+  {f: 'saeti', cls: (r) => 'rank' + (r.saeti <= 3 ? ' m' + r.saeti : '')}, {f: 'leikmadur', cls: 'l name'}, {f: 'forgjof', fmt: (v) => v < 0 ? '+' + (-v) : String(v)}, {f: 'hogg'}, {f: 'netto', cls: 'dim'}, {f: 's9', cls: 'dim'}, {f: 'punktar', cls: 'tot'}
+]);
+tableDraw('tolf', 'tolfraedi', [
+  {f: 'leikmadur', cls: 'l name'}, {f: 'hringir', cls: 'dim'}, {f: 'punktar'}, {f: 'medaltal', fmt: fmtNum, cls: 'tot'}, {f: 'besti'},
+  {f: 'ernir', cls: 'sc eagle'}, {f: 'fuglar', cls: 'sc bird'}, {f: 'por', cls: 'sc par'}, {f: 'skollar', cls: 'sc bogey'}, {f: 'tvofaldir', cls: 'sc dbl'}, {f: 'thrir', cls: 'good'}, {f: 'nullar', cls: 'bad'}
+]);
+
+// Hole chart
+const NET_PAR = 2;
+dash.draw('holur', (el) => {
+  el.replaceChildren();
+  const g = dash.data('holur_sidast');
+  if (g.status !== 'ok' || !g.data.length) { el.textContent = '—'; return; }
+  const rows = g.data;
+  const W = Math.max(280, el.clientWidth || 600), H = 220;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('display', 'block');
+  const ymax = Math.max(3, d3.max(rows, (r) => r.medaltal));
+  const probe = svg.append('text').attr('font-size', 12).text('3,5');
+  const lw = probe.node().getComputedTextLength(); probe.remove();
+  const m = {t: 10, r: 6, b: 24, l: lw + 10};
+  const x = d3.scaleBand(rows.map((r) => r.hola), [m.l, W - m.r]).padding(0.25);
+  const y = d3.scaleLinear([0, ymax], [H - m.b, m.t]);
+  const ticks = y.ticks(4);
+  svg.append('g').selectAll('line').data(ticks).join('line')
+    .attr('x1', m.l).attr('x2', W - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d))
+    .attr('stroke', 'var(--cds-chart-grid)');
+  svg.append('g').selectAll('text').data(ticks).join('text')
+    .attr('x', m.l - 6).attr('y', (d) => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end')
+    .attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text((d) => d.toLocaleString('is'));
+  const bars = svg.append('g').selectAll('rect').data(rows).join('rect')
+    .attr('x', (d) => x(d.hola)).attr('width', x.bandwidth()).attr('y', (d) => y(d.medaltal))
+    .attr('height', (d) => y(0) - y(d.medaltal)).attr('rx', 3).attr('fill', (d) => d.medaltal >= NET_PAR ? 'var(--gh-bar)' : 'var(--gh-bar-low)');
+  svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(NET_PAR)).attr('y2', y(NET_PAR))
+    .attr('stroke', 'var(--gh-gold)').attr('stroke-width', 1.5).attr('stroke-dasharray', '4 3');
+  const step = x.bandwidth() < 14 ? 3 : 1;
+  svg.append('g').selectAll('text').data(rows.filter((d, i) => i % step === 0 || d.hola === 18)).join('text')
+    .attr('x', (d) => x(d.hola) + x.bandwidth() / 2).attr('y', H - 6).attr('text-anchor', 'middle')
+    .attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text((d) => d.hola);
+  const tip = document.createElement('div');
+  tip.className = 'tip'; tip.hidden = true; el.append(tip);
+  bars.on('pointerenter pointermove', (ev, d) => {
+    bars.attr('opacity', (b) => b === d ? 1 : 0.45);
+    tip.replaceChildren();
+    const t = document.createElement('div'); t.className = 't'; t.textContent = `Hola ${d.hola} · par ${d.par} · fgj. ${d.hcp_hola}`;
+    const v = document.createElement('div'); v.textContent = `${d.medaltal.toLocaleString('is')} punktar að meðaltali`;
+    tip.append(t, v); tip.hidden = false;
+    const [px] = d3.pointer(ev, el);
+    const tw = tip.offsetWidth;
+    tip.style.left = Math.min(Math.max(0, px - tw / 2), el.clientWidth - tw) + 'px';
+    tip.style.top = Math.max(0, y(d.medaltal) * (el.clientWidth / W) - 48) + 'px';
+  }).on('pointerleave', () => { bars.attr('opacity', 1); tip.hidden = true; });
+});
+// Hole-by-hole popover for the standings
+window.ghHover = null;
+const ghHide = () => {
+  if (!window.ghHover) return;
+  window.ghHover.td.classList.remove('on');
+  window.ghHover = null;
+  dash.draw('sctip');
+};
+for (const tb of document.querySelectorAll('.gh [data-draw="stada"]')) {
+  tb.addEventListener('pointerover', (ev) => {
+    const td = ev.target.closest('td.rd');
+    if (!td || td.classList.contains('none')) { ghHide(); return; }
+    if (window.ghHover && window.ghHover.td === td) return;
+    ghHide();
+    td.classList.add('on');
+    window.ghHover = {td, leikmadur: td.parentElement.dataset.key, umferd: td.cellIndex - 3};
+    dash.draw('sctip');
+  });
+  tb.addEventListener('pointerleave', ghHide);
+}
+dash.draw('sctip', (el) => {
+  el.replaceChildren();
+  const h = window.ghHover;
+  const g = dash.data('hringir');
+  if (g.status !== 'ok') { el.textContent = '—'; el.style.display = 'none'; return; }
+  const rows = h ? g.data.filter((r) => +r.umferd === h.umferd && r.leikmadur === h.leikmadur).sort((a, b) => a.hola - b.hola) : [];
+  if (!h || !rows.length || !h.td.isConnected) { el.style.display = 'none'; return; }
+  const mk = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const sum = (rs, f) => rs.reduce((s, r) => s + +r[f], 0);
+  const hd = mk('div', 'hd');
+  const left = mk('div');
+  left.append(mk('b', null, rows[0].leikmadur), mk('span', null, ` · U${h.umferd} · ${rows[0].vollur}`));
+  hd.append(left, mk('span', null, `${sum(rows, 'hogg')} högg · ${sum(rows, 'punktar')} pkt`));
+  el.append(hd);
+  const sym = (r) => { const d = +r.hogg - +r.par; return d <= -2 ? 's e' : d === -1 ? 's b' : d === 0 ? 's' : d === 1 ? 's bo' : 's d'; };
+  for (const [part, label] of [[rows.filter((r) => r.hola <= 9), 'Út'], [rows.filter((r) => r.hola > 9), 'Inn']]) {
+    if (!part.length) continue;
+    const tbl = mk('table', 'mini');
+    const line = (cls, head, cells, total) => {
+      const tr = mk('tr', cls);
+      tr.append(mk('th', null, head));
+      for (const c of cells) { const td = mk('td'); if (c instanceof Node) td.append(c); else td.textContent = c; tr.append(td); }
+      const s = mk('td', 'sum'); s.textContent = total; tr.append(s);
+      return tr;
+    };
+    tbl.append(
+      line('hn', 'Hola', part.map((r) => r.hola), label),
+      line('pr', 'Par', part.map((r) => r.par), sum(part, 'par')),
+      line('hg', 'Högg', part.map((r) => mk('span', sym(r), r.hogg)), sum(part, 'hogg'))
+    );
+    const pk = line('pk', 'Punktar', part.map((r) => r.punktar), sum(part, 'punktar'));
+    [...pk.children].slice(1, -1).forEach((td, i) => { if (+part[i].punktar === 0) td.classList.add('z'); });
+    tbl.append(pk);
+    el.append(tbl);
+  }
+  const ft = mk('div', 'ft');
+  for (const [c, n] of [['s e', 'Örn+'], ['s b', 'Fugl'], ['s bo', 'Skolli'], ['s d', 'Tvöf. skolli+']]) { const sp = mk('span'); sp.append(mk('span', c, ''), ' ' + n); ft.append(sp); }
+  el.append(ft);
+  el.style.display = 'block';
+  const host = el.parentElement.getBoundingClientRect();
+  const cr = h.td.getBoundingClientRect();
+  const w = el.offsetWidth;
+  el.style.left = Math.max(4, Math.min(cr.left - host.left + cr.width / 2 - w / 2, host.width - w - 4)) + 'px';
+  el.style.top = (cr.bottom - host.top + 6) + 'px';
+});
+</script>
+
+<script>window.__runAllDraws();</script>
+</div>
+</body>
+</html>
