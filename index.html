@@ -174,6 +174,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 .gh .sctip .s.d{background:var(--gh-dbl);color:#fff;border-radius:2px}
 .gh .sctip .ft{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:var(--cds-gap-xs);font-size:var(--cds-font-size-caption);color:var(--cds-text-secondary)}
 .gh .sctip .ft .s{width:1.2em;height:1.2em;font-size:.8em}
+.gh .rlabel{font-size:var(--cds-font-size-caption);text-transform:uppercase;letter-spacing:.08em;color:var(--color-fg-muted);font-weight:var(--cds-font-weight-medium)}
+.gh .gh-rsel{background-color:var(--color-panel);border-radius:999px;font:inherit;font-size:var(--cds-font-size-body);min-width:min(100%,18rem)}
 .gh .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:var(--cds-gap-md)}
 .gh .chart{position:relative;min-height:220px}
 .gh .tip{position:absolute;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);pointer-events:none;white-space:nowrap}
@@ -265,16 +267,22 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     </div>
   </section>
 
+  <div class="viewbar">
+    <label class="rlabel" for="ghRound">Umferð</label>
+    <select id="ghRound" class="dash-select gh-rsel" data-draw="rsel" data-source="vellir" aria-label="Veldu umferð"></select>
+    <p class="vnote">Síðasta umferð er valin sjálfkrafa.</p>
+  </div>
+
   <div class="grid2">
     <section class="card" id="umferd">
       <div class="cardhead">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3l11 4-11 4"/></svg>
-        <h2>Síðasta umferð · <span class="vlh" data-draw="rvollur" data-source="umferd_sidast" data-field="vollur" data-row="0">—</span></h2>
+        <h2>Úrslit umferðar</h2>
       </div>
       <div class="cardbody">
         <p class="note">Jöfn stig ráðast af jafnteflisreglum Trackman, fyrst lægsta nettóskori. Sjá reglur neðst á síðunni.</p>
         <div class="scroll">
-          <table data-source="umferd_sidast" data-row-key="leikmadur">
+          <table data-source="umferd_sidast" data-row-key="umferd,leikmadur">
             <thead><tr>
               <th data-field="saeti">#</th><th class="l" data-field="leikmadur">Leikmaður</th><th data-field="forgjof">Fgj.</th><th data-field="hogg">Högg</th><th data-field="netto">Nettó</th><th data-field="s9">S9</th><th data-field="punktar">Punktar</th>
             </tr></thead>
@@ -286,7 +294,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     <section class="card" id="holur">
       <div class="cardhead">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
-        <h2>Holurnar í síðustu umferð</h2>
+        <h2>Holurnar í umferðinni</h2>
       </div>
       <div class="cardbody">
         <div class="legend">
@@ -294,7 +302,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           <span><i style="background:var(--gh-bar-low)"></i>Undir nettó pari</span>
           <span><i style="height:0;border-top:2px dashed var(--gh-gold);border-radius:0"></i>2 punktar</span>
         </div>
-        <div class="chart" data-draw="holur" data-source="holur_sidast">—</div>
+        <div class="chart" data-draw="holur" data-source="holur_sidast vellir">—</div>
       </div>
     </section>
   </div>
@@ -414,21 +422,24 @@ dash.calc('stada', {
 
 dash.calc('umferd_sidast', {
   inputs: ['hringir_p'],
-  title: 'Síðasta umferð',
-  description: 'Úrslit nýjustu umferðar eftir punktum; jöfn stig ráðast af jafnteflisreglum Trackman (nettóskor, forgjöf, seinni 9, síðustu 6, 3, 18. hola, fyrri 9, 4–9, 7–9, 9. hola). Gestir raðast sér.',
+  title: 'Úrslit umferða',
+  description: 'Úrslit hverrar umferðar eftir punktum; jöfn stig ráðast af jafnteflisreglum Trackman (nettóskor, forgjöf, seinni 9, síðustu 6, 3, 18. hola, fyrri 9, 4–9, 7–9, 9. hola). Gestir raðast sér.',
   fn: (hringir_p) => {
     const keys = ['n_s9', 'n_s6', 'n_s3', 'n_18', 'n_f9', 'n_49', 'n_79', 'n_9'];
     const rnd = (a, b) => b.punktar - a.punktar || a.netto - b.netto || a.forgjof - b.forgjof || keys.reduce((c, k) => c || a[k] - b[k], 0);
-    const u = Math.max(...hringir_p.map((r) => r.umferd));
-    const rows = hringir_p.filter((r) => r.umferd === u).sort(rnd);
-    const pos = {true: 0, false: 0}, prev = {};
-    return rows.map((r) => {
-      pos[r.gestur]++;
-      const p = prev[r.gestur];
-      const saeti = p && rnd(p.r, r) === 0 ? p.saeti : pos[r.gestur];
-      prev[r.gestur] = {r, saeti};
-      return {saeti, gestur: r.gestur, leikmadur: r.leikmadur, forgjof: r.forgjof, hogg: r.hogg, netto: r.netto, f9: r.f9, s9: r.s9, punktar: r.punktar, umferd: r.umferd, vollur: r.vollur};
-    });
+    const out = [];
+    for (const u of [...new Set(hringir_p.map((r) => r.umferd))].sort((a, b) => a - b)) {
+      const rows = hringir_p.filter((r) => r.umferd === u).sort(rnd);
+      const pos = {true: 0, false: 0}, prev = {};
+      for (const r of rows) {
+        pos[r.gestur]++;
+        const p = prev[r.gestur];
+        const saeti = p && rnd(p.r, r) === 0 ? p.saeti : pos[r.gestur];
+        prev[r.gestur] = {r, saeti};
+        out.push({umferd: r.umferd, vollur: r.vollur, saeti, gestur: r.gestur, leikmadur: r.leikmadur, forgjof: r.forgjof, hogg: r.hogg, netto: r.netto, f9: r.f9, s9: r.s9, punktar: r.punktar});
+      }
+    }
+    return out;
   }
 });
 
@@ -453,16 +464,17 @@ dash.calc('tolfraedi', {
 
 dash.calc('holur_sidast', {
   inputs: ['hringir'],
-  title: 'Holurnar í síðustu umferð',
-  description: 'Meðalpunktar allra leikmanna á hverri holu í nýjustu umferð.',
+  title: 'Holurnar eftir umferðum',
+  description: 'Meðalpunktar allra leikmanna á hverri holu, fyrir hverja umferð.',
   fn: (hringir) => {
-    const u = Math.max(...hringir.map((r) => r.umferd));
     const rows = [];
-    for (let h = 1; h <= 18; h++) {
-      const rs = hringir.filter((r) => r.umferd === u && r.hola === h);
-      if (!rs.length) continue;
-      const avg = rs.reduce((s, r) => s + r.punktar, 0) / rs.length;
-      rows.push({hola: h, par: rs[0].par, hcp_hola: rs[0].hcp_hola, medaltal: Math.round(avg * 100) / 100, leikmenn: rs.length});
+    for (const u of [...new Set(hringir.map((r) => r.umferd))].sort((a, b) => a - b)) {
+      for (let h = 1; h <= 18; h++) {
+        const rs = hringir.filter((r) => r.umferd === u && r.hola === h);
+        if (!rs.length) continue;
+        const avg = rs.reduce((s, r) => s + r.punktar, 0) / rs.length;
+        rows.push({umferd: u, hola: h, par: rs[0].par, hcp_hola: rs[0].hcp_hola, medaltal: Math.round(avg * 100) / 100, leikmenn: rs.length});
+      }
     }
     return rows;
   }
@@ -530,7 +542,6 @@ textDraw('best', 'lykiltolur', 'besti_hringur');
 textDraw('bestname', 'lykiltolur', 'besti_nafn');
 textDraw('birdies', 'lykiltolur', 'flestir_fuglar');
 textDraw('birdname', 'lykiltolur', 'fuglar_nafn');
-textDraw('rvollur', 'umferd_sidast', 'vollur');
 
 dash.draw('dots', (el) => {
   const g = dash.data('lykiltolur');
@@ -548,15 +559,31 @@ const setView = (v) => {
 };
 for (const b of document.querySelectorAll('.gh .segb')) b.addEventListener('click', () => setView(b.dataset.view));
 
+// Round picker: defaults to the latest round played
+window.ghRound = null;
+const ghRoundNow = () => {
+  if (window.ghRound != null) return window.ghRound;
+  const g = dash.data('vellir');
+  const played = g.status === 'ok' ? g.data.filter((r) => r.vollur) : [];
+  return played.length ? Math.max(...played.map((r) => +r.umferd)) : 1;
+};
+dash.draw('rsel', (sel) => {
+  const g = dash.data('vellir');
+  const played = g.status === 'ok' ? g.data.filter((r) => r.vollur) : [];
+  sel.replaceChildren(...played.map((r) => new Option(`U${r.umferd} · ${r.vollur}`, String(r.umferd))));
+  sel.value = String(ghRoundNow());
+  sel.onchange = () => { window.ghRound = +sel.value; dash.draw('umferd'); dash.draw('holur'); };
+});
+
 // Tables
 const fmtNum = (v) => v == null ? '' : (+v).toLocaleString('is', {maximumFractionDigits: 1});
-const tableDraw = (name, id, cols) => dash.draw(name, (tb) => {
+const tableDraw = (name, id, cols, opt = {}) => dash.draw(name, (tb) => {
   tb.replaceChildren();
   const g = dash.data(id);
   if (g.status !== 'ok') return;
-  for (const r of g.data.filter((x) => (window.ghView === 'gestir') === !!x.gestur)) {
+  for (const r of g.data.filter((x) => (window.ghView === 'gestir') === !!x.gestur && (!opt.filter || opt.filter(x)))) {
     const tr = document.createElement('tr');
-    if (r.leikmadur != null) tr.dataset.key = r.leikmadur;
+    if (opt.key) tr.dataset.key = opt.key(r); else if (r.leikmadur != null) tr.dataset.key = r.leikmadur;
     for (const c of cols) {
       const td = document.createElement('td');
       const v = r[c.f];
@@ -576,7 +603,7 @@ tableDraw('stada', 'stada', [
 ]);
 tableDraw('umferd', 'umferd_sidast', [
   {f: 'saeti', cls: (r) => 'rank' + (r.saeti <= 3 ? ' m' + r.saeti : '')}, {f: 'leikmadur', cls: 'l name'}, {f: 'forgjof', fmt: (v) => v < 0 ? '+' + (-v) : String(v)}, {f: 'hogg'}, {f: 'netto', cls: 'dim'}, {f: 's9', cls: 'dim'}, {f: 'punktar', cls: 'tot'}
-]);
+], {filter: (r) => r.umferd === ghRoundNow(), key: (r) => r.umferd + ',' + encodeURIComponent(r.leikmadur)});
 tableDraw('tolf', 'tolfraedi', [
   {f: 'leikmadur', cls: 'l name'}, {f: 'hringir', cls: 'dim'}, {f: 'punktar'}, {f: 'medaltal', fmt: fmtNum, cls: 'tot'}, {f: 'besti'},
   {f: 'ernir', cls: 'sc eagle'}, {f: 'fuglar', cls: 'sc bird'}, {f: 'por', cls: 'sc par'}, {f: 'skollar', cls: 'sc bogey'}, {f: 'tvofaldir', cls: 'sc dbl'}, {f: 'thrir', cls: 'good'}, {f: 'nullar', cls: 'bad'}
@@ -587,8 +614,10 @@ const NET_PAR = 2;
 dash.draw('holur', (el) => {
   el.replaceChildren();
   const g = dash.data('holur_sidast');
+  const u = ghRoundNow();
   if (g.status !== 'ok' || !g.data.length) { el.textContent = '—'; return; }
-  const rows = g.data;
+  const rows = g.data.filter((r) => r.umferd === u);
+  if (!rows.length) { el.textContent = '—'; return; }
   const W = Math.max(280, el.clientWidth || 600), H = 220;
   const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('display', 'block');
   const ymax = Math.max(3, d3.max(rows, (r) => r.medaltal));
