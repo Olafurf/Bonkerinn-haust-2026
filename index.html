@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Golfhópurinn – Mótaröð 2026–27</title>
+<title>Bönkerinn – Meistargolf Haust 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
 <style>
@@ -101,6 +101,15 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 .gh .tile.gold{border-top-color:var(--gh-gold)}
 .gh .tile svg{width:30px;height:30px;color:var(--gh-green-2);display:block;margin:0 auto var(--cds-gap-xs)}
 .gh .tile.gold svg{color:var(--gh-gold)}
+.gh .podium{list-style:none;margin:var(--cds-gap-sm) 0 0;padding:0;display:flex;flex-direction:column;gap:6px;text-align:left}
+.gh .podium li{display:flex;align-items:center;gap:var(--cds-gap-sm)}
+.gh .podium .pm{flex:none;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:var(--cds-font-size-caption);font-weight:600;color:#1b1b1b}
+.gh .podium .pm.m1{background:var(--gh-gold)}
+.gh .podium .pm.m2{background:var(--gh-silver)}
+.gh .podium .pm.m3{background:var(--gh-bronze);color:#fff}
+.gh .podium .pn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:var(--cds-font-weight-medium)}
+.gh .podium li:first-child .pn{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-heading)}
+.gh .podium .pp{font-family:var(--font-anthropic-serif);font-variant-numeric:tabular-nums;color:var(--gh-green-2);font-size:var(--cds-font-size-heading)}
 .gh .lbl{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);text-transform:uppercase;letter-spacing:.08em}
 .gh .big{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums;margin-top:var(--cds-gap-xs);line-height:1.2}
 .gh .sub{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-top:var(--cds-gap-xs)}
@@ -194,7 +203,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 <div class="gh">
   <header class="hero">
     <div class="eyebrow">Trackman · Punktakeppni</div>
-    <h1>Golfhópurinn<br><em>Mótaröð 2026–27</em></h1>
+    <h1>Bönkerinn - Meistargolf<br><em> Haust 2026</em></h1>
     <div class="rule"><span></span></div>
     <p class="lead"><b data-draw="leader" data-source="lykiltolur" data-field="leidtogi">—</b> leiðir eftir <b data-draw="nr" data-source="lykiltolur" data-field="umferdir">—</b> af 8 umferðum. Fimm bestu hringir af átta telja.</p>
     <div class="dots" data-draw="dots" data-source="lykiltolur" aria-label="Spilaðar umferðir">—</div>
@@ -202,25 +211,24 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <div class="tiles">
     <div class="tile">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3l11 4-11 4"/><path d="M3 21h8"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3l11 4-11 4"></path><path d="M3 21h8"></path></svg>
       <div class="lbl">Umferðir spilaðar</div>
       <div class="big"><span data-draw="nr2" data-source="lykiltolur" data-field="umferdir">—</span> af 8</div>
       <div class="sub">Síðast: <span data-draw="sidvollur" data-source="lykiltolur" data-field="sidasti_vollur">—</span></div>
     </div>
     <div class="tile gold">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/><path d="M12 14v4M8 21h8M9 18h6"/></svg>
-      <div class="lbl">Efstur í mótaröðinni</div>
-      <div class="big" data-draw="leader2" data-source="lykiltolur" data-field="leidtogi">—</div>
-      <div class="sub"><span data-draw="leaderpts" data-source="lykiltolur" data-field="leidtogi_stig">—</span> punktar</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0z"></path><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"></path><path d="M12 14v4M8 21h8M9 18h6"></path></svg>
+      <div class="lbl">Efstu 3 í mótaröðinni</div>
+      <ol class="podium" data-draw="top3" data-source="stada"></ol>
     </div>
     <div class="tile">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"></path></svg>
       <div class="lbl">Besti hringur</div>
       <div class="big"><span data-draw="best" data-source="lykiltolur" data-field="besti_hringur">—</span> punktar</div>
       <div class="sub" data-draw="bestname" data-source="lykiltolur" data-field="besti_nafn">—</div>
     </div>
     <div class="tile">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11c3-1 5-4 9-4 3 0 4 2 6 2l3-2-1 4c-1 3-4 6-9 6H7l-3 3v-4c-1-1-1-3-1-5z"/><circle cx="16.5" cy="9.5" r=".6" fill="currentColor"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11c3-1 5-4 9-4 3 0 4 2 6 2l3-2-1 4c-1 3-4 6-9 6H7l-3 3v-4c-1-1-1-3-1-5z"></path><circle cx="16.5" cy="9.5" r=".6" fill="currentColor"></circle></svg>
       <div class="lbl">Flestir fuglar</div>
       <div class="big" data-draw="birdies" data-source="lykiltolur" data-field="flestir_fuglar">—</div>
       <div class="sub" data-draw="birdname" data-source="lykiltolur" data-field="fuglar_nafn">—</div>
@@ -233,12 +241,12 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       <button type="button" class="segb" data-view="gestir" aria-pressed="false">Gestir</button>
     </div>
     <p class="vnote" data-view-note="motarod">Fastir meðlimir hópsins. Aðeins þeir keppa í mótaröðinni.</p>
-    <p class="vnote" data-view-note="gestir" hidden>Gestaspilarar. Þeir raðast sér og telja ekki í mótaröðinni.</p>
+    <p class="vnote" data-view-note="gestir" hidden="">Gestaspilarar. Þeir raðast sér og telja ekki í mótaröðinni.</p>
   </div>
 
   <section class="card" id="stada">
     <div class="cardhead">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M12 14v4M8 21h8"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0z"></path><path d="M12 14v4M8 21h8"></path></svg>
       <h2>Stöðutafla</h2>
     </div>
     <div class="cardbody">
@@ -276,7 +284,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   <div class="grid2">
     <section class="card" id="umferd">
       <div class="cardhead">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3l11 4-11 4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3l11 4-11 4"></path></svg>
         <h2>Úrslit umferðar</h2>
       </div>
       <div class="cardbody">
@@ -293,7 +301,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     </section>
     <section class="card" id="holur">
       <div class="cardhead">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
         <h2>Holurnar í umferðinni</h2>
       </div>
       <div class="cardbody">
@@ -309,7 +317,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="card" id="tolfraedi">
     <div class="cardhead">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="14" cy="9" r=".6" fill="currentColor"/><circle cx="12" cy="13" r=".6" fill="currentColor"/><circle cx="15.5" cy="13.5" r=".6" fill="currentColor"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="9" cy="10" r=".6" fill="currentColor"></circle><circle cx="14" cy="9" r=".6" fill="currentColor"></circle><circle cx="12" cy="13" r=".6" fill="currentColor"></circle><circle cx="15.5" cy="13.5" r=".6" fill="currentColor"></circle></svg>
       <h2>Tölfræði tímabilsins</h2>
     </div>
     <div class="cardbody">
@@ -533,8 +541,19 @@ const textDraw = (name, id, field) => dash.draw(name, (el) => {
   el.textContent = String(g.data[0][field]);
 });
 textDraw('leader', 'lykiltolur', 'leidtogi');
-textDraw('leader2', 'lykiltolur', 'leidtogi');
-textDraw('leaderpts', 'lykiltolur', 'leidtogi_stig');
+dash.draw('top3', (ol) => {
+  ol.replaceChildren();
+  const g = dash.data('stada');
+  if (g.status !== 'ok') return;
+  for (const r of g.data.filter((x) => !x.gestur && x.saeti <= 3).slice(0, 3)) {
+    const li = document.createElement('li');
+    const m = document.createElement('span'); m.className = 'pm m' + r.saeti; m.textContent = r.saeti;
+    const n = document.createElement('span'); n.className = 'pn'; n.textContent = r.leikmadur;
+    const p = document.createElement('span'); p.className = 'pp'; p.textContent = r.samtals;
+    li.append(m, n, p);
+    ol.append(li);
+  }
+});
 textDraw('nr', 'lykiltolur', 'umferdir');
 textDraw('nr2', 'lykiltolur', 'umferdir');
 textDraw('sidvollur', 'lykiltolur', 'sidasti_vollur');
