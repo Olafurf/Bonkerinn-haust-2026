@@ -103,10 +103,6 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 .gh .tile.gold svg{color:var(--gh-gold)}
 .gh .podium{list-style:none;margin:var(--cds-gap-sm) 0 0;padding:0;display:flex;flex-direction:column;gap:6px;text-align:left}
 .gh .podium li{display:flex;align-items:center;gap:var(--cds-gap-sm)}
-.gh .podium .pm{flex:none;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:var(--cds-font-size-caption);font-weight:600;color:#1b1b1b}
-.gh .podium .pm.m1{background:var(--gh-gold)}
-.gh .podium .pm.m2{background:var(--gh-silver)}
-.gh .podium .pm.m3{background:var(--gh-bronze);color:#fff}
 .gh .podium .pn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:var(--cds-font-weight-medium)}
 .gh .podium li:first-child .pn{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-heading)}
 .gh .podium .pp{font-family:var(--font-anthropic-serif);font-variant-numeric:tabular-nums;color:var(--gh-green-2);font-size:var(--cds-font-size-heading)}
@@ -136,14 +132,16 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 .gh td.dim{color:var(--color-fg-muted)}
 .gh td.tot{font-family:var(--font-anthropic-serif);font-size:var(--cds-font-size-heading);color:var(--gh-green-2)}
 .gh td.rank{width:2.4rem}
-.gh td.rank.m1,.gh td.rank.m2,.gh td.rank.m3{color:#1b1b1b;font-weight:var(--cds-font-weight-medium);
-  background-clip:content-box;border-radius:50%}
-.gh td.rank.m1{background:radial-gradient(circle,var(--gh-gold) 0 13px,transparent 14px)}
-.gh td.rank.m2{background:radial-gradient(circle,var(--gh-silver) 0 13px,transparent 14px)}
-.gh td.rank.m3{background:radial-gradient(circle,var(--gh-bronze) 0 13px,transparent 14px);color:#fff}
-.gh tbody tr:hover td.rank.m1{background:radial-gradient(circle,var(--gh-gold) 0 13px,transparent 14px)}
-.gh tbody tr:hover td.rank.m2{background:radial-gradient(circle,var(--gh-silver) 0 13px,transparent 14px)}
-.gh tbody tr:hover td.rank.m3{background:radial-gradient(circle,var(--gh-bronze) 0 13px,transparent 14px)}
+.gh .tro{position:relative;display:inline-flex;width:26px;height:28px;vertical-align:middle}
+.gh .tro svg,.gh .tile.gold .tro svg{width:100%;height:100%;display:block;overflow:visible;margin:0;color:inherit}
+.gh .tro .cup{fill:currentColor}
+.gh .tro .hd{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.gh .tro .n{position:absolute;left:0;right:0;top:3px;text-align:center;font-size:11px;font-weight:700;line-height:1;color:#1b1b1b;font-family:var(--font-anthropic-sans)}
+.gh .tro.m1{color:var(--gh-gold)}
+.gh .tro.m2{color:var(--gh-silver)}
+.gh .tro.m3{color:var(--gh-bronze)}
+.gh .tro.m3 .n{color:#fff}
+.gh td.rank .tro{margin:-4px 0}
 .gh td.rd.cnt{background:var(--gh-gold-soft);font-weight:var(--cds-font-weight-medium)}
 .gh td.rd.drop{color:var(--color-fg-muted);text-decoration:line-through}
 .gh td.sc{font-weight:var(--cds-font-weight-medium)}
@@ -589,13 +587,24 @@ const textDraw = (name, id, field) => dash.draw(name, (el) => {
   el.textContent = String(g.data[0][field]);
 });
 textDraw('leader', 'lykiltolur', 'leidtogi');
+// Gold / silver / bronze trophy with the place number on the cup
+const ghTrophy = (n) => {
+  const s = document.createElement('span');
+  s.className = 'tro m' + n;
+  s.title = n + '. sæti';
+  s.innerHTML = '<svg viewBox="0 0 24 26" aria-hidden="true"><path class="hd" d="M6.5 4.5H3.5a3.5 3.5 0 0 0 4 4.5M17.5 4.5h3a3.5 3.5 0 0 1-4 4.5"/><path class="cup" d="M6 2h12v7a6 6 0 0 1-12 0z"/><rect class="cup" x="10.6" y="14.5" width="2.8" height="5" rx="0.6"/><rect class="cup" x="6.5" y="19.5" width="11" height="3.6" rx="1"/></svg>';
+  const num = document.createElement('span'); num.className = 'n'; num.textContent = n;
+  s.append(num);
+  return s;
+};
+
 dash.draw('top3', (ol) => {
   ol.replaceChildren();
   const g = dash.data('stada');
   if (g.status !== 'ok') return;
   for (const r of g.data.filter((x) => !x.gestur && x.saeti <= 3).slice(0, 3)) {
     const li = document.createElement('li');
-    const m = document.createElement('span'); m.className = 'pm m' + r.saeti; m.textContent = r.saeti;
+    const m = ghTrophy(r.saeti);
     const n = document.createElement('span'); n.className = 'pn'; n.textContent = r.leikmadur;
     const p = document.createElement('span'); p.className = 'pp'; p.textContent = r.samtals;
     li.append(m, n, p);
@@ -725,6 +734,7 @@ const tableDraw = (name, id, cols, opt = {}) => dash.draw(name, (tb) => {
       td.textContent = c.fmt ? c.fmt(v) : (v == null ? '' : String(v));
       const cls = typeof c.cls === 'function' ? c.cls(r) : c.cls;
       if (cls) td.className = cls;
+      if (c.f === 'saeti' && v >= 1 && v <= 3) td.replaceChildren(ghTrophy(v));
       tr.append(td);
     }
     tb.append(tr);
