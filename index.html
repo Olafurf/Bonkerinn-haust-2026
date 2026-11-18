@@ -75,6 +75,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   --gh-green:#0f3d2b; --gh-green-2:#1d5c40; --gh-gold:#c9a227; --gh-gold-soft:color-mix(in srgb,#c9a227 18%,transparent);
   --gh-silver:#a7adb4; --gh-bronze:#b87333;
   --gh-bar:#2f8a5b; --gh-bar-low:color-mix(in srgb,#c9a227 70%,var(--color-panel));
+  --gh-holl1:color-mix(in srgb,#2f8a5b 16%,transparent); --gh-holl1-edge:#2f8a5b;
+  --gh-holl2:color-mix(in srgb,#e07b39 18%,transparent); --gh-holl2-edge:#e07b39;
   --gh-bird:#d1495b; --gh-eagle:#e0a400; --gh-bogey:#3d7bd9; --gh-dbl:#1f3f7a;
   font-family:var(--font-anthropic-sans);display:flex;flex-direction:column;gap:var(--cds-gap-xl);max-width:1200px;margin-inline:auto
 }
@@ -188,6 +190,12 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 .gh .bump.hl .pl:not(.on){opacity:.15}
 .gh .bump .pl{cursor:pointer}
 .gh .bump .pl.on .ln{stroke-width:4}
+.gh tr.holl1 td{background:var(--gh-holl1)}
+.gh tr.holl2 td{background:var(--gh-holl2)}
+.gh tr.holl1 td:first-child{box-shadow:inset 4px 0 0 var(--gh-holl1-edge)}
+.gh tr.holl2 td:first-child{box-shadow:inset 4px 0 0 var(--gh-holl2-edge)}
+.gh tbody tr.holl1:hover td{background:color-mix(in srgb,#2f8a5b 24%,transparent)}
+.gh tbody tr.holl2:hover td{background:color-mix(in srgb,#e07b39 26%,transparent)}
 .gh .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:var(--cds-gap-md)}
 .gh .chart{position:relative;min-height:220px}
 .gh .tip{position:absolute;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);pointer-events:none;white-space:nowrap}
@@ -302,6 +310,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <h2>Úrslit umferðar</h2>
       </div>
       <div class="cardbody">
+        <div class="legend">
+          <span><i style="background:var(--gh-holl1);border-left:3px solid var(--gh-holl1-edge)"></i>Sæti 1–4: spila saman í næsta holli</span>
+          <span><i style="background:var(--gh-holl2);border-left:3px solid var(--gh-holl2-edge)"></i>Sæti 5–8: spila saman í næsta holli</span>
+        </div>
         <p class="note">Jöfn stig ráðast af jafnteflisreglum Trackman, fyrst lægsta nettóskori. Sjá reglur neðst á síðunni.</p>
         <div class="scroll">
           <table data-source="umferd_sidast" data-row-key="umferd,leikmadur">
@@ -380,7 +392,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       <dt>0 pkt holur</dt><dd>Holur sem gáfu engan punkt.</dd>
     </dl>
   </details>
-<footer class="src">Uppfært 17. nóv. 2026 · Gögn af Trackman-skorkortum</footer>
+<footer class="src">Uppfært 18. nóv. 2026 · Gögn af Trackman-skorkortum</footer>
 </div>
 
 <script>
@@ -728,6 +740,7 @@ const tableDraw = (name, id, cols, opt = {}) => dash.draw(name, (tb) => {
   for (const r of g.data.filter((x) => (window.ghView === 'gestir') === !!x.gestur && (!opt.filter || opt.filter(x)))) {
     const tr = document.createElement('tr');
     if (opt.key) tr.dataset.key = opt.key(r); else if (r.leikmadur != null) tr.dataset.key = r.leikmadur;
+    if (opt.rowCls) { const rc = opt.rowCls(r); if (rc) tr.className = rc; }
     for (const c of cols) {
       const td = document.createElement('td');
       const v = r[c.f];
@@ -748,7 +761,8 @@ tableDraw('stada', 'stada', [
 ]);
 tableDraw('umferd', 'umferd_sidast', [
   {f: 'saeti', cls: (r) => 'rank' + (r.saeti <= 3 ? ' m' + r.saeti : '')}, {f: 'leikmadur', cls: 'l name'}, {f: 'forgjof', fmt: (v) => v < 0 ? '+' + (-v) : String(v)}, {f: 'hogg'}, {f: 'netto', cls: 'dim'}, {f: 's9', cls: 'dim'}, {f: 'punktar', cls: 'tot'}
-], {filter: (r) => r.umferd === ghRoundNow(), key: (r) => r.umferd + ',' + encodeURIComponent(r.leikmadur)});
+], {filter: (r) => r.umferd === ghRoundNow(), key: (r) => r.umferd + ',' + encodeURIComponent(r.leikmadur),
+  rowCls: (r) => r.gestur ? '' : r.saeti <= 4 ? 'holl1' : r.saeti <= 8 ? 'holl2' : ''});
 tableDraw('tolf', 'tolfraedi', [
   {f: 'leikmadur', cls: 'l name'}, {f: 'hringir', cls: 'dim'}, {f: 'punktar'}, {f: 'medaltal', fmt: fmtNum, cls: 'tot'}, {f: 'besti'},
   {f: 'ernir', cls: 'sc eagle'}, {f: 'fuglar', cls: 'sc bird'}, {f: 'por', cls: 'sc par'}, {f: 'skollar', cls: 'sc bogey'}, {f: 'tvofaldir', cls: 'sc dbl'}, {f: 'thrir', cls: 'good'}, {f: 'nullar', cls: 'bad'}
