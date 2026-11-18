@@ -190,12 +190,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 .gh .bump.hl .pl:not(.on){opacity:.15}
 .gh .bump .pl{cursor:pointer}
 .gh .bump .pl.on .ln{stroke-width:4}
-.gh tr.holl1 td{background:var(--gh-holl1)}
-.gh tr.holl2 td{background:var(--gh-holl2)}
-.gh tr.holl1 td:first-child{box-shadow:inset 4px 0 0 var(--gh-holl1-edge)}
-.gh tr.holl2 td:first-child{box-shadow:inset 4px 0 0 var(--gh-holl2-edge)}
-.gh tbody tr.holl1:hover td{background:color-mix(in srgb,#2f8a5b 24%,transparent)}
-.gh tbody tr.holl2:hover td{background:color-mix(in srgb,#e07b39 26%,transparent)}
+.gh td.rd.h1{background:var(--gh-holl1);box-shadow:inset 0 -3px 0 var(--gh-holl1-edge)}
+.gh td.rd.h2{background:var(--gh-holl2);box-shadow:inset 0 -3px 0 var(--gh-holl2-edge)}
 .gh .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:var(--cds-gap-md)}
 .gh .chart{position:relative;min-height:220px}
 .gh .tip{position:absolute;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);pointer-events:none;white-space:nowrap}
@@ -266,8 +262,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <span>Smelltu á skor til að sjá holu fyrir holu, og aftur til að loka</span>
       </div>
       <div class="legend" data-view-note="motarod">
-        <span><i style="background:var(--gh-holl1);border-left:3px solid var(--gh-holl1-edge)"></i>Sæti 1–4: spila saman í næsta holli</span>
-        <span><i style="background:var(--gh-holl2);border-left:3px solid var(--gh-holl2-edge)"></i>Sæti 5–8: spila saman í næsta holli</span>
+        <span><i style="background:var(--gh-holl1);border-bottom:3px solid var(--gh-holl1-edge)"></i>4 hæstu skor umferðar: spila saman í næsta holli</span>
+        <span><i style="background:var(--gh-holl2);border-bottom:3px solid var(--gh-holl2-edge)"></i>Skor í 5.–8. sæti umferðar: næsta holl á eftir</span>
       </div>
       <div class="scroll">
         <table data-source="stada" data-row-key="leikmadur">
@@ -442,6 +438,16 @@ dash.calc('stada', {
       return o;
     });
     rows.sort(tot);
+    for (let u = 1; u <= 8; u++) {
+      const rr = hringir_p.filter((r) => r.umferd === u && !r.gestur).sort(rnd);
+      let prev = null;
+      rr.forEach((r, i) => {
+        const s = prev && rnd(prev.r, r) === 0 ? prev.s : i + 1;
+        prev = {r, s};
+        const o = rows.find((x) => x.leikmadur === r.leikmadur);
+        if (o) o['r' + u] = s;
+      });
+    }
     const pos = {true: 0, false: 0}, prev = {};
     rows.forEach((r) => {
       pos[r.gestur]++;
@@ -753,11 +759,11 @@ const tableDraw = (name, id, cols, opt = {}) => dash.draw(name, (tb) => {
   }
 });
 
-const uCol = (u) => ({f: 'u' + u, cls: (r) => r['u' + u] == null ? 'rd none' : (String(r.telja).split(',').includes(String(u)) ? 'rd cnt' : 'rd drop')});
+const uCol = (u) => ({f: 'u' + u, cls: (r) => r['u' + u] == null ? 'rd none' : (String(r.telja).split(',').includes(String(u)) ? 'rd cnt' : 'rd drop') + (r['r' + u] <= 4 ? ' h1' : r['r' + u] <= 8 ? ' h2' : '')});
 tableDraw('stada', 'stada', [
   {f: 'saeti', cls: (r) => 'rank' + (r.saeti <= 3 ? ' m' + r.saeti : '')}, {f: 'leikmadur', cls: 'l name'}, {f: 'samtals', cls: 'tot'}, {f: 'spilad', cls: 'dim'},
   uCol(1), uCol(2), uCol(3), uCol(4), uCol(5), uCol(6), uCol(7), uCol(8)
-], {rowCls: (r) => r.gestur ? '' : r.saeti <= 4 ? 'holl1' : r.saeti <= 8 ? 'holl2' : ''});
+]);
 tableDraw('umferd', 'umferd_sidast', [
   {f: 'saeti', cls: (r) => 'rank' + (r.saeti <= 3 ? ' m' + r.saeti : '')}, {f: 'leikmadur', cls: 'l name'}, {f: 'forgjof', fmt: (v) => v < 0 ? '+' + (-v) : String(v)}, {f: 'hogg'}, {f: 'netto', cls: 'dim'}, {f: 's9', cls: 'dim'}, {f: 'punktar', cls: 'tot'}
 ], {filter: (r) => r.umferd === ghRoundNow(), key: (r) => r.umferd + ',' + encodeURIComponent(r.leikmadur)});
