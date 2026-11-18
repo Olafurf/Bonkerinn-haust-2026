@@ -144,7 +144,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 .gh .tro.m3{color:var(--gh-bronze)}
 .gh .tro.m3 .n{color:#fff}
 .gh td.rank .tro{margin:-4px 0}
-.gh td.rd.cnt{background:var(--gh-gold-soft);font-weight:var(--cds-font-weight-medium)}
+.gh td.rd.cnt{font-weight:var(--cds-font-weight-medium)}
 .gh td.rd.drop{color:var(--color-fg-muted);text-decoration:line-through}
 .gh td.sc{font-weight:var(--cds-font-weight-medium)}
 .gh td.sc.eagle{color:var(--gh-eagle)}
@@ -262,9 +262,12 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     </div>
     <div class="cardbody">
       <div class="legend">
-        <span><i style="background:var(--gh-gold-soft);border:1px solid var(--gh-gold)"></i>Telur í heildarstigum</span>
-        <span><s>00</s> Telur ekki (utan 5 bestu)</span>
+                <span><s>00</s> Telur ekki (utan 5 bestu)</span>
         <span>Smelltu á skor til að sjá holu fyrir holu, og aftur til að loka</span>
+      </div>
+      <div class="legend" data-view-note="motarod">
+        <span><i style="background:var(--gh-holl1);border-left:3px solid var(--gh-holl1-edge)"></i>Sæti 1–4: spila saman í næsta holli</span>
+        <span><i style="background:var(--gh-holl2);border-left:3px solid var(--gh-holl2-edge)"></i>Sæti 5–8: spila saman í næsta holli</span>
       </div>
       <div class="scroll">
         <table data-source="stada" data-row-key="leikmadur">
@@ -310,10 +313,6 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <h2>Úrslit umferðar</h2>
       </div>
       <div class="cardbody">
-        <div class="legend">
-          <span><i style="background:var(--gh-holl1);border-left:3px solid var(--gh-holl1-edge)"></i>Sæti 1–4: spila saman í næsta holli</span>
-          <span><i style="background:var(--gh-holl2);border-left:3px solid var(--gh-holl2-edge)"></i>Sæti 5–8: spila saman í næsta holli</span>
-        </div>
         <p class="note">Jöfn stig ráðast af jafnteflisreglum Trackman, fyrst lægsta nettóskori. Sjá reglur neðst á síðunni.</p>
         <div class="scroll">
           <table data-source="umferd_sidast" data-row-key="umferd,leikmadur">
@@ -758,11 +757,10 @@ const uCol = (u) => ({f: 'u' + u, cls: (r) => r['u' + u] == null ? 'rd none' : (
 tableDraw('stada', 'stada', [
   {f: 'saeti', cls: (r) => 'rank' + (r.saeti <= 3 ? ' m' + r.saeti : '')}, {f: 'leikmadur', cls: 'l name'}, {f: 'samtals', cls: 'tot'}, {f: 'spilad', cls: 'dim'},
   uCol(1), uCol(2), uCol(3), uCol(4), uCol(5), uCol(6), uCol(7), uCol(8)
-]);
+], {rowCls: (r) => r.gestur ? '' : r.saeti <= 4 ? 'holl1' : r.saeti <= 8 ? 'holl2' : ''});
 tableDraw('umferd', 'umferd_sidast', [
   {f: 'saeti', cls: (r) => 'rank' + (r.saeti <= 3 ? ' m' + r.saeti : '')}, {f: 'leikmadur', cls: 'l name'}, {f: 'forgjof', fmt: (v) => v < 0 ? '+' + (-v) : String(v)}, {f: 'hogg'}, {f: 'netto', cls: 'dim'}, {f: 's9', cls: 'dim'}, {f: 'punktar', cls: 'tot'}
-], {filter: (r) => r.umferd === ghRoundNow(), key: (r) => r.umferd + ',' + encodeURIComponent(r.leikmadur),
-  rowCls: (r) => r.gestur ? '' : r.saeti <= 4 ? 'holl1' : r.saeti <= 8 ? 'holl2' : ''});
+], {filter: (r) => r.umferd === ghRoundNow(), key: (r) => r.umferd + ',' + encodeURIComponent(r.leikmadur)});
 tableDraw('tolf', 'tolfraedi', [
   {f: 'leikmadur', cls: 'l name'}, {f: 'hringir', cls: 'dim'}, {f: 'punktar'}, {f: 'medaltal', fmt: fmtNum, cls: 'tot'}, {f: 'besti'},
   {f: 'ernir', cls: 'sc eagle'}, {f: 'fuglar', cls: 'sc bird'}, {f: 'por', cls: 'sc par'}, {f: 'skollar', cls: 'sc bogey'}, {f: 'tvofaldir', cls: 'sc dbl'}, {f: 'thrir', cls: 'good'}, {f: 'nullar', cls: 'bad'}
